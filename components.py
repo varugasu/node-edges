@@ -2,6 +2,7 @@ from collections import defaultdict
 from typing import Generator
 import pyray as rl
 from constants import WIDTH, HEIGHT
+import math
 
 
 class Node:
@@ -38,18 +39,31 @@ class Edges:
     def draw(self):
         for edges in self.node_edges.values():
             for edge in edges:
+                vx = edge["to"].x - edge["from"].x
+                vy = edge["to"].y - edge["from"].y
+                vector_length = math.sqrt(vx**2 + vy**2)
+                normalized_vx = vx / vector_length
+                normalized_vy = vy / vector_length
+
+                from_x = int(edge["from"].x + Node.radius * normalized_vx)
+                from_y = int(edge["from"].y + Node.radius * normalized_vy)
+
+                to_x = int(edge["to"].x - Node.radius * normalized_vx)
+                to_y = int(edge["to"].y - Node.radius * normalized_vy)
+
                 rl.draw_line_ex(
-                    rl.Vector2(edge["from"].x, edge["from"].y),
-                    rl.Vector2(edge["to"].x, edge["to"].y),
+                    rl.Vector2(from_x, from_y),
+                    rl.Vector2(to_x, to_y),
                     4,
                     rl.BLACK,
                 )
 
-                to_right = 1 if edge["to"].x > edge["from"].x else -1
+                arrow_direction = 1 if to_x > from_x else -1
+                arrow_offset = 10 * arrow_direction * -1
 
-                v1 = (edge["to"].x, edge["to"].y - self.arrow_length * to_right)
-                v2 = (edge["to"].x, edge["to"].y + self.arrow_length * to_right)
-                v3 = (edge["to"].x + self.arrow_length * to_right, edge["to"].y)
+                v1 = (to_x + arrow_offset, to_y - self.arrow_length * arrow_direction)
+                v2 = (to_x + arrow_offset, to_y + self.arrow_length * arrow_direction)
+                v3 = (to_x, to_y)
 
                 rl.draw_triangle(
                     rl.Vector2(*v1),
