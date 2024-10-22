@@ -1,33 +1,30 @@
 import pyray as rl
+from components import Node, Edges, LayoutController
+from constants import WIDTH, HEIGHT
 
-
-class Node:
-    radius = 40
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def draw(self):
-        rl.draw_circle(self.x, self.y, Node.radius, rl.BLACK)
-
-
-WIDTH = 800
-HEIGHT = 450
+graph = {
+    "A": ["B"],
+    "B": ["A"],
+}
 
 rl.init_window(WIDTH, HEIGHT, "Node and Edges")
 
-nodes: list[Node] = [
-    Node(WIDTH // 2 - 100, HEIGHT // 2),
-    Node(WIDTH // 2 + 100, HEIGHT // 2),
-]
+layout_controller = LayoutController(graph)
+
+nodes: dict[str, Node] = {}
+for node_id, (x, y) in layout_controller.get_node_position():
+    nodes[node_id] = Node(node_id, x, y)
+
+edges = Edges(graph, nodes)
+
 
 while not rl.window_should_close():
     rl.begin_drawing()
     rl.clear_background(rl.WHITE)
 
-    for node in nodes:
+    for node in nodes.values():
         node.draw()
+    edges.draw()
 
     rl.end_drawing()
 
