@@ -36,8 +36,11 @@ class Edges:
     def draw(self):
         for edges in self.node_edges.values():
             for edge in edges:
-                rl.draw_line(
-                    edge["from"].x, edge["from"].y, edge["to"].x, edge["to"].y, rl.BLACK
+                rl.draw_line_ex(
+                    rl.Vector2(edge["from"].x, edge["from"].y),
+                    rl.Vector2(edge["to"].x, edge["to"].y),
+                    4,
+                    rl.BLACK,
                 )
 
 
