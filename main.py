@@ -8,6 +8,9 @@ class Node:
         self.x = x
         self.y = y
 
+    def draw(self):
+        rl.draw_circle(self.x, self.y, Node.radius, rl.BLACK)
+
 
 WIDTH = 800
 HEIGHT = 450
@@ -24,7 +27,7 @@ while not rl.window_should_close():
     rl.clear_background(rl.WHITE)
 
     for node in nodes:
-        rl.draw_circle(node.x, node.y, Node.radius, rl.BLACK)
+        node.draw()
 
     rl.end_drawing()
 
