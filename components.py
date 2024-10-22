@@ -17,6 +17,8 @@ class Node:
 
 
 class Edges:
+    arrow_length = 10
+
     def __init__(self, graph: dict[str, list[str]], nodes: dict[str, Node]):
         self.graph = graph
         self.nodes = nodes
@@ -40,6 +42,19 @@ class Edges:
                     rl.Vector2(edge["from"].x, edge["from"].y),
                     rl.Vector2(edge["to"].x, edge["to"].y),
                     4,
+                    rl.BLACK,
+                )
+
+                to_right = 1 if edge["to"].x > edge["from"].x else -1
+
+                v1 = (edge["to"].x, edge["to"].y - self.arrow_length * to_right)
+                v2 = (edge["to"].x, edge["to"].y + self.arrow_length * to_right)
+                v3 = (edge["to"].x + self.arrow_length * to_right, edge["to"].y)
+
+                rl.draw_triangle(
+                    rl.Vector2(*v1),
+                    rl.Vector2(*v2),
+                    rl.Vector2(*v3),
                     rl.BLACK,
                 )
 
