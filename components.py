@@ -19,6 +19,7 @@ class Node:
 
 class Edges:
     arrow_length = 10
+    edge_offset = 10
 
     def __init__(self, graph: dict[str, list[str]], nodes: dict[str, Node]):
         self.graph = graph
@@ -45,11 +46,21 @@ class Edges:
                 normalized_vx = vx / vector_length
                 normalized_vy = vy / vector_length
 
-                from_x = int(edge["from"].x + Node.radius * normalized_vx)
-                from_y = int(edge["from"].y + Node.radius * normalized_vy)
+                from_x = edge["from"].x
+                from_y = edge["from"].y
+                to_x = edge["to"].x
+                to_y = edge["to"].y
 
-                to_x = int(edge["to"].x - Node.radius * normalized_vx)
-                to_y = int(edge["to"].y - Node.radius * normalized_vy)
+                from_x = from_x - self.edge_offset * normalized_vy
+                from_y = from_y + self.edge_offset * normalized_vx
+                to_x = to_x - self.edge_offset * normalized_vy
+                to_y = to_y + self.edge_offset * normalized_vx
+
+                from_x = int(from_x + Node.radius * normalized_vx)
+                from_y = int(from_y + Node.radius * normalized_vy)
+
+                to_x = int(to_x - Node.radius * normalized_vx)
+                to_y = int(to_y - Node.radius * normalized_vy)
 
                 rl.draw_line_ex(
                     rl.Vector2(from_x, from_y),
