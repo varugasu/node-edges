@@ -4,7 +4,7 @@ from constants import WIDTH, HEIGHT
 
 graph = {
     "A": ["B"],
-    "B": ["A"],
+    "B": ["A", "A"],
 }
 
 rl.init_window(WIDTH, HEIGHT, "Node and Edges")

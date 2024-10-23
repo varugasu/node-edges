@@ -38,7 +38,9 @@ class Edges:
         return self.node_edges[node_id]
 
     def draw(self):
-        for edges in self.node_edges.values():
+        for node_id, edges in self.node_edges.items():
+            multiple_edges_count = 1 if self.edge_count[node_id] > 1 else 0
+
             for edge in edges:
                 vx = edge["to"].x - edge["from"].x
                 vy = edge["to"].y - edge["from"].y
@@ -51,10 +53,24 @@ class Edges:
                 to_x = edge["to"].x
                 to_y = edge["to"].y
 
-                from_x = from_x - self.edge_offset * normalized_vy
-                from_y = from_y + self.edge_offset * normalized_vx
-                to_x = to_x - self.edge_offset * normalized_vy
-                to_y = to_y + self.edge_offset * normalized_vx
+                from_x = (
+                    from_x
+                    - (self.edge_offset * normalized_vy) * multiple_edges_count * 1.2
+                )
+                from_y = (
+                    from_y
+                    + (self.edge_offset * normalized_vx) * multiple_edges_count * 1.2
+                )
+                to_x = (
+                    to_x
+                    - (self.edge_offset * normalized_vy) * multiple_edges_count * 1.2
+                )
+                to_y = (
+                    to_y
+                    + (self.edge_offset * normalized_vx) * multiple_edges_count * 1.2
+                )
+                if multiple_edges_count > 0:
+                    multiple_edges_count += 1
 
                 from_x = int(from_x + Node.radius * normalized_vx)
                 from_y = int(from_y + Node.radius * normalized_vy)
